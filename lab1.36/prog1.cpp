@@ -71,41 +71,22 @@ namespace prog1 {
         return min;
     }
 
-    MatrixElement *upSort(MatrixElement *head) {
+    MatrixElement *Sort(MatrixElement *head, int(*f)(int, int), int(*h)(int, int)) {
         MatrixElement *new_head = nullptr;
         while (head != nullptr) {
             MatrixElement *node = head;
             head = head->next;
-            if (new_head == nullptr || !isGreater(node->value, new_head->value)) {//меняем меcтами
-                Change(&node, &new_head);
+            if (new_head == nullptr || f(node->value, new_head->value)) {//меняем меcтами
+                node->next = new_head;
+                new_head = node;
             } else {
                 MatrixElement *current = new_head;
-                while (current->next != nullptr && isGreaterEqual(node->value,
-                                                                  current->next->value)) {//пропускаем ряд элементов, идущих по возрастанию
+                while (current->next != nullptr &&
+                       h(node->value, current->next->value)) {//пропускаем ряд элементов, идущих по возрастанию
                     current = current->next;
                 }
-                Swap(&node, &current);
-            }
-        }
-
-        return new_head;
-    }
-
-    MatrixElement *downSort(MatrixElement *head) {
-        MatrixElement *new_head = nullptr;
-
-        while (head != nullptr) {
-            MatrixElement *node = head;
-            head = head->next;
-
-            if (new_head == nullptr || isGreater(node->value, new_head->value)) {
-                Change(&node, &new_head);
-            } else {
-                MatrixElement *current = new_head;
-                while (current->next != nullptr && !isGreaterEqual(node->value, current->next->value)) {
-                    current = current->next;
-                }
-                Swap(&node, &current);
+                node->next = current->next;
+                current->next = node;
             }
         }
 
@@ -116,8 +97,8 @@ namespace prog1 {
         int max, min;
         max = findMaxSumRow(matrix);
         min = findMinSumRow(matrix);
-        matrix->rows[max] = upSort(matrix->rows[max]);
-        matrix->rows[min] = downSort(matrix->rows[min]);
+        matrix->rows[max] = Sort(matrix->rows[max], isLess, isGreaterEqual);
+        matrix->rows[min] = Sort(matrix->rows[min], isGreater, isLessEqual);
     }
 
     void addElement(Matrix *matrix, int x, int y, int value) {
@@ -252,4 +233,4 @@ namespace prog1 {
     }
 }
 
-//стоит подумать над массивом списков, так как сортировка в них проще ,так и сумму привязать можно
+
