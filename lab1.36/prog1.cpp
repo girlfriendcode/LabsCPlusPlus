@@ -5,51 +5,6 @@
 #include "prog1.h"
 
 namespace prog1 {
-    int getInt(int *a) {
-        int n;
-        do {
-            n = scanf("%d", a);
-            if (n < 0)
-                return 0;
-            if (n == 0) {
-                printf("%s\n", "Error! Please, repeat your input: ");
-                scanf("%*[^\n]");
-            }
-        } while (n == 0);
-        return 1;
-    }
-
-    int getNaturalInt(int *a) {
-        int n;
-        do {
-            n = scanf("%d", a);
-            if (n < 0)
-                return 0;
-            if (n == 0 || *a < 0) {
-                printf("%s\n", "Error! Please, repeat your input: ");
-                scanf("%*[^\n]");
-            }
-        } while (n == 0 || *a < 0);
-        return 1;
-    }
-
-    int getNaturalInt(int *a, const int *max) {//ввод с верхней границей
-        int n;
-        do {
-            n = scanf("%d", a);
-            if (n < 0)
-                return 0;
-            if (*a > *max) {
-                printf("%s\n", "Error!You exceeded the limit!Repeat input: ");
-                scanf("%*[^\n]");
-            }
-            if (n == 0 || *a < 0) {
-                printf("%s\n", "Error! Please, repeat your input: ");
-                scanf("%*[^\n]");
-            }
-        } while (n == 0 || *a < 0 || *a > *max);
-        return 1;
-    }
 
     Matrix *input() {
         int lines, columns;
@@ -234,6 +189,52 @@ namespace prog1 {
                 std::cout << "   Sum of row:" << sumOfRow(matrix->rows[i]);
             }
         }
+    }
+
+    int getInt(int *a) {
+        int n;
+        do {
+            n = scanf("%d", a);
+            if (n < 0)
+                return 0;
+            if (n == 0) {
+                printf("%s\n", "Error! Please, repeat your input: ");
+                scanf("%*[^\n]");
+            }
+        } while (n == 0);
+        return 1;
+    }
+
+    int getNaturalInt(int *a) {
+        int n;
+        do {
+            n = scanf("%d", a);
+            if (n < 0)
+                return 0;
+            if (n == 0 || *a < 0) {
+                printf("%s\n", "Error! Please, repeat your input: ");
+                scanf("%*[^\n]");
+            }
+        } while (n == 0 || *a < 0);
+        return 1;
+    }
+
+    int getNaturalInt(int *a, const int *max) {//ввод с верхней границей
+        int n;
+        do {
+            n = scanf("%d", a);
+            if (n < 0)
+                return 0;
+            if (*a > *max) {
+                printf("%s\n", "Error!You exceeded the limit!Repeat input: ");
+                scanf("%*[^\n]");
+            }
+            if (n == 0 || *a < 0) {
+                printf("%s\n", "Error! Please, repeat your input: ");
+                scanf("%*[^\n]");
+            }
+        } while (n == 0 || *a < 0 || *a > *max);
+        return 1;
     }
 
     Matrix *erase(Matrix *matrix) {
