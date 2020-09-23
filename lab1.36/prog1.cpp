@@ -75,7 +75,6 @@ namespace prog1 {
         MatrixElement *new_head = nullptr;
         while (head != nullptr) {
             MatrixElement *node = head;
-            node = head;
             head = head->next;
             if (new_head == nullptr || !isGreater(node->value, new_head->value)) {//меняем меcтами
                 Change(&node, &new_head);
