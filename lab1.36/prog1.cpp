@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "prog1.h"
-#include <vector>
 
 namespace prog1 {
     int getInt(int *a) {
