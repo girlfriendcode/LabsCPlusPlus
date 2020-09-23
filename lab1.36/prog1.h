@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <vector>
 
 namespace prog1 {
     struct MatrixElement {
