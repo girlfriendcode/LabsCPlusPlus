@@ -33,6 +33,8 @@ namespace prog1 {
     int getInt(int *a);
 
     int getNaturalInt(int *a);
+    
+    int getNaturalInt (int *a, const int *max);
 
     MatrixElement *upSort(MatrixElement *head);
 
