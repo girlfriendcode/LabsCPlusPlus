@@ -57,10 +57,6 @@ namespace prog1 {
         if (isGreater(a,b)||a==b) return 1;
         return 0;
     }
-    inline int isEqual(int a,int b){
-        if (a==b) return 1;
-        return 0;
-    }
     inline void Swap(int *a, int *b, int *c, int *d) {
         *b = *a;
         *c = *d;
