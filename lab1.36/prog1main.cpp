@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "prog1.h"
-#include <vector>
 
 using namespace prog1;
 
