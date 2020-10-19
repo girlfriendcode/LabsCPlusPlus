@@ -85,7 +85,7 @@ namespace Prog3 {
 			hex[j] = '0';
 		length = ((leng - i) > 31) ? 31 : leng - i;
 		for (int j = i; j < leng && ll < maxLen; j++, ll++) {
-			str[j] = upper(str[j]); //проверка регистра
+			str[j] = upper(str[j]); //перевод в верхний регистр
 			if ((str[j] < '0' || ('9' < str[j] && str[j] < 'A') || 'F' < str[j]))//проверка попадания символа в диапазон шестнадцатиричных цифр
 				throw std::exception("Invalid symbol");
 			hex[ll] = str[j];
