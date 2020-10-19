@@ -22,7 +22,7 @@ namespace Prog3 {
 		}
 	}
 
-	HexNumber::HexNumber(const long int a)
+	HexNumber::HexNumber(const long  a)
 	{
 		int a2 = a;
 		if (a < 0) {
@@ -41,16 +41,6 @@ namespace Prog3 {
 		length = HexNumber::MAX_LEN - i - 1;
 		if (!length)
 			length = 1;
-	}
-
-	char HexNumber::getSign() const
-	{
-		return hex[0];
-	}
-
-	char HexNumber::getElement(int i) const
-	{
-		return hex[i];
 	}
 
 	HexNumber::HexNumber(const HexNumber& number) {
@@ -200,7 +190,7 @@ namespace Prog3 {
 		return *this;
 	}
 
-	std::ostream& HexNumber::output(std::ostream& o)
+	std::ostream& HexNumber::output(std::ostream& o) const
 	{
 		if (hex[0] == 'F')
 			o << "-";
