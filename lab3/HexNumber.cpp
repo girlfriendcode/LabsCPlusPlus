@@ -3,22 +3,22 @@
 #include <iostream>
 #include <string.h>
 #include <cctype>
+#include <stdexcept> 
+#include <algorithm>
 
 namespace Prog3 {
-	HexNumber::HexNumber() //пустой конструктор
+	HexNumber::HexNumber(): hex {},
+		length(1)//пустой конструктор
 	{
-		for (int i = 0; i < HexNumber::MAX_LEN; i++)
-			hex[i] = '0';
-		length = 1;
+		std::fill(hex, hex + HexNumber::MAX_LEN ,'0');
 	}
-
 	HexNumber::HexNumber(char* str)//инициализирующий строкой конструктор
 	{
 		try {
 			setN(str);
 		}
-		catch (std::exception& a) {
-			throw std::exception("Wrong data");
+		catch (std::exception& ) {
+			throw std::invalid_argument("Wrong data");
 		}
 	}
 
@@ -44,10 +44,8 @@ namespace Prog3 {
 	}
 
 	HexNumber::HexNumber(const HexNumber& number) {
-		for (int i = 0; i < HexNumber::MAX_LEN; i++) {
-			hex[i] = number.hex[i];
-		}
-		length = number.length;
+		length=number.length;
+		std::copy(other.hex, other.hex + HexNumber::MAX_LEN, hex);
 	}
 	HexNumber& HexNumber::operator=(const HexNumber& num)
 	 {
@@ -293,49 +291,25 @@ namespace Prog3 {
 		return -1;
 	}
 
-	int CharToHex(char num) {
-		switch (num) {
-		case '0': return 0x0;
-		case '1': return 0x1;
-		case '2': return 0x2;
-		case '3': return 0x3;
-		case '4': return 0x4;
-		case '5': return 0x5;
-		case '6': return 0x6;
-		case '7': return 0x7;
-		case '8': return 0x8;
-		case '9': return 0x9;
-		case 'A': return 0xa;
-		case 'B': return 0xb;
-		case 'C': return 0xc;
-		case 'D': return 0xd;
-		case 'E': return 0xe;
-		case 'F': return 0xf;
-		}
-		return -1;
-	}
+	int CharToHex(const char c)
+        {     
+          if (std::isdigit(c)) // in <cctype>
+               return c - '0';
+          else if (c >= 'A' && c <= 'F')
+               return c - 'A' + 10;
 
-	char HexToChar(int num) {
-		switch (num) {
-		case 0x0: return '0';
-		case 0x1: return '1';
-		case 0x2: return '2';
-		case 0x3: return '3';
-		case 0x4: return '4';
-		case 0x5: return '5';
-		case 0x6: return '6';
-		case 0x7: return '7';
-		case 0x8: return '8';
-		case 0x9: return '9';
-		case 0xA: return 'A';
-		case 0xB: return 'B';
-		case 0xC: return 'C';
-		case 0xD: return 'D';
-		case 0xE: return 'E';
-		case 0xF: return 'F';
-		}
-		return '/';
-	}
+          return -1;
+        }
+
+	char HexToChar(const int num)
+        {
+          if (std::isdigit(num)) // in <cctype>
+               return '0' + num;
+          else if (num > 9 && num < 16)
+               return 'A' + num - 10;
+
+	  return '/';
+         }
   
 	void out(HexNumber& op1, HexNumber& op2, HexNumber& res, const char* msg) {
 		if (op2.getSign() == 'F') {
