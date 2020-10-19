@@ -6,7 +6,7 @@ namespace Prog3 {
 	private:
 		static const int maxLen = 32;
 		char hex[maxLen];
-		int length;//фактическая длина
+		int length;//длина введённого пользователем символьного массива
 	public:
 		HexNumber();
 		HexNumber(char* str);
