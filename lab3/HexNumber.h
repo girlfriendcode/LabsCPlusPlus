@@ -14,7 +14,9 @@ namespace Prog3 {
 		HexNumber(char* str);
 		HexNumber(const long  a);
 		HexNumber(const HexNumber& number);
-    
+		
+		HexNumber& operator= (const HexNumber& num);
+		
 		char getSign()const { return hex[0] ;};
 		char getElement(int i)const { return hex[i] ;};
     
