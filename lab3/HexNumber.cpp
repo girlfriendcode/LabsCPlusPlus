@@ -45,7 +45,7 @@ namespace Prog3 {
 
 	HexNumber::HexNumber(const HexNumber& number) {
 		length=number.length;
-		std::copy(other.hex, other.hex + HexNumber::MAX_LEN, hex);
+		std::copy(number.hex, number.hex + HexNumber::MAX_LEN, hex);
 	}
 	HexNumber& HexNumber::operator=(const HexNumber& num)
 	 {
