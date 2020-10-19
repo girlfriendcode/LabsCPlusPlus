@@ -2,11 +2,12 @@
 #include "HexNumber.h"
 #include <iostream>
 #include <string.h>
+#include <cctype>
 
 namespace Prog3 {
 	HexNumber::HexNumber() //пустой конструктор
 	{
-		for (int i = 0; i < maxLen; i++)
+		for (int i = 0; i < HexNumber::MAX_LEN; i++)
 			hex[i] = '0';
 		length = 1;
 	}
@@ -30,14 +31,14 @@ namespace Prog3 {
 		}
 		else
 			hex[0] = '0';
-		int i = maxLen - 1;
+		int i = HexNumber::MAX_LEN - 1;
 		for (; a2; i--) {
 			hex[i] = HexToChar(a2 & 0xf);
 			a2 >>= 4;
 		}
 		for (int j = 1; j <= i; j++)
 			hex[j] = '0';
-		length = maxLen - i - 1;
+		length = HexNumber::MAX_LEN - i - 1;
 		if (!length)
 			length = 1;
 	}
@@ -53,11 +54,17 @@ namespace Prog3 {
 	}
 
 	HexNumber::HexNumber(const HexNumber& number) {
-		for (int i = 0; i < maxLen; i++) {
+		for (int i = 0; i < HexNumber::MAX_LEN; i++) {
 			hex[i] = number.hex[i];
 		}
 		length = number.length;
 	}
+	HexNumber& HexNumber::operator=(const HexNumber& num)
+	 {
+		 length = num.length;
+		 std::copy(num.hex, num.hex + HexNumber::MAX_LEN, hex);
+		 return *this;
+	 }
 
 	HexNumber& HexNumber::setN(char* str) {
 		int leng = strlen(str), i = 0;
@@ -78,28 +85,28 @@ namespace Prog3 {
 			i += 2;
 		while (str[i] == '0')//проверка ввода числа, начинающегося с 0
 			i += 1;
-		int ll = maxLen - leng + i;//место, с которого начинаем вводить число в массив
+		int ll = HexNumber::MAX_LEN - leng + i;//место, с которого начинаем вводить число в массив
 		if (ll < 1)
 			ll = 1;
 		for (int j = 1; j < ll; j++)// заполняем массив нулями до значащих цифр
 			hex[j] = '0';
 		length = ((leng - i) > 31) ? 31 : leng - i;
-		for (int j = i; j < leng && ll < maxLen; j++, ll++) {
-			str[j] = upper(str[j]); //перевод в верхний регистр
+		for (int j = i; j < leng && ll < HexNumber::MAX_LEN; j++, ll++) {
+			str[j] = std::toupper(str[j]); //перевод в верхний регистр
 			if ((str[j] < '0' || ('9' < str[j] && str[j] < 'A') || 'F' < str[j]))//проверка попадания символа в диапазон шестнадцатиричных цифр
 				throw std::exception("Invalid symbol");
 			hex[ll] = str[j];
 		}
 		if (leng - i > 31)
 			std::cout << "Only first 31 digits will be read" << std::endl;
-		if ((hex[0] == 'F' && length == 1 && hex[maxLen - 1] == '0') || !length) {
+		if ((hex[0] == 'F' && length == 1 && hex[HexNumber::MAX_LEN - 1] == '0') || !length) {
 			HexNumber c;
 			*this = c;
 		}
 		return *this;
 	}
 
-	const HexNumber HexNumber::Add(const HexNumber& num) {
+	HexNumber& HexNumber::Add(const HexNumber& num) {
 		HexNumber add = num, result, first = *this;
 		if (add.length == 1 && add.hex[1] == '0')//второй оператор просто 0
 			return first;
@@ -108,7 +115,7 @@ namespace Prog3 {
 		if (add.hex[0] == 'F')
 			add.Convert();
 		int t = 0;//перенос из младшего разряда
-		for (int i = maxLen - 1; i > -1; i--) {
+		for (int i = HexNumber::MAX_LEN - 1; i > -1; i--) {
 			int sum = CharToHex(first.hex[i]) + CharToHex(add.hex[i]);
 			result.hex[i] = HexToChar((sum) % 0x10);
 			t = 0;
@@ -128,13 +135,13 @@ namespace Prog3 {
 		int k = 1;
 		while (result.hex[k] == '0')
 			k++;
-		result.length = maxLen - k;
+		result.length = HexNumber::MAX_LEN - k;
 		if (!result.length)//значит, результат 0
 			result.length = 1;
 		return result;
 	}
 
-	const HexNumber HexNumber::Sub(const HexNumber& num)
+	HexNumber& HexNumber::Sub(const HexNumber& num)
 	{
 		HexNumber sub = num, result;
 		if (sub.hex[0] == '0')//положительное число
@@ -161,9 +168,9 @@ namespace Prog3 {
 			*this = object;
 			return *this;
 		}
-		int stop = maxLen - length;
-		for (int i = maxLen - 1; i >= stop; i--) {
-			if ((i + a) < maxLen)
+		int stop = HexNumber::MAX_LEN - length;
+		for (int i = HexNumber::MAX_LEN - 1; i >= stop; i--) {
+			if ((i + a) < HexNumber::MAX_LEN)
 				hex[i + a] = hex[i];
 			hex[i] = '0';
 		}
@@ -175,17 +182,17 @@ namespace Prog3 {
 			throw std::exception("Invalid input");
 		if (a == 0)
 			return *this;
-		if (a > (maxLen - length)) {//выходим за пределы 32 знаков
+		if (a > (HexNumber::MAX_LEN - length)) {//выходим за пределы 32 знаков
 			HexNumber object;//пустой конструктор on
 			*this = object;
 			return *this;
 		}
-		for (int i = maxLen - length; i < maxLen; i++) {
+		for (int i = HexNumber::MAX_LEN - length; i < HexNumber::MAX_LEN; i++) {
 			if ((i - a) > 0)
 				hex[i - a] = hex[i];
 		}
 		for (int i = 0; i < a; i++) {//дополняем нулями справа
-			hex[maxLen - i - 1] = '0';
+			hex[HexNumber::MAX_LEN - i - 1] = '0';
 		}
 		length += a;
 		if (length > 31)
@@ -198,7 +205,7 @@ namespace Prog3 {
 		if (hex[0] == 'F')
 			o << "-";
 		//пошли ненулевые элементы
-		for (int j = maxLen - length;j < maxLen; j++) {
+		for (int j = HexNumber::MAX_LEN - length;j < HexNumber::MAX_LEN; j++) {
 			o << hex[j];
 		}
 		return o;
@@ -235,18 +242,18 @@ namespace Prog3 {
 
 	HexNumber& HexNumber::Convert()//перевод в допкод с добавлением единицы для отрицательных чисел
 	{
-		for (int i = 1; i < maxLen; i++) {
+		for (int i = 1; i < HexNumber::MAX_LEN; i++) {
 			int n = 0xF - CharToHex(hex[i]);
 			hex[i] = HexToChar(n);
 		}
-		int l = maxLen - 1;
+		int l = HexNumber::MAX_LEN - 1;
 		while (l > 0 && hex[l] == 'F')//поиск места для добавления единицы
 			l--;
 		if (l == 0)
 			throw std::exception("Overflow");
 		int k = CharToHex(hex[l] + 1);
 		hex[l] = HexToChar(k);
-		for (int i = l + 1; i < maxLen; i++)
+		for (int i = l + 1; i < HexNumber::MAX_LEN; i++)
 			hex[i] = '0';
 		return *this;
 	}
@@ -261,8 +268,8 @@ namespace Prog3 {
 		if (num.length > length)
 			l = num.length;
 		char sgn = getSign();
-		//maxLen-l-позиция, начиная с которой сравниваем цифры
-		for (int i = maxLen - l; i < maxLen; i++) {
+		//HexNumber::MAX_LEN-l-позиция, начиная с которой сравниваем цифры
+		for (int i = HexNumber::MAX_LEN - l; i < HexNumber::MAX_LEN; i++) {
 			if (hex[i] > num.getElement(i)) {
 				if (sgn == '0')
 					return '>';
@@ -294,18 +301,6 @@ namespace Prog3 {
 			return 0;
 		}
 		return -1;
-	}
-
-	char upper(const char a) {
-		switch (a) {
-		case 'a':return 'A';
-		case 'b':return 'B';
-		case 'c':return 'C';
-		case 'd':return 'D';
-		case 'e':return 'E';
-		case 'f':return 'F';
-		}
-		return a;
 	}
 
 	int CharToHex(char num) {
@@ -352,93 +347,21 @@ namespace Prog3 {
 		return '/';
 	}
   
-	void dialog(HexNumber& a, HexNumber& b) {
-		int k = 0;
-		while (k != 5) {
-			std::cout << "1) Move first/actual operand to the right" << std::endl << "2) Move first/actual operand to the left" << std::endl << "3) Compare operands (first/actual with the second)" << std::endl << "4) Check parity of first/actual operand" << std::endl << "5) Exit" << std::endl;
-			std::cin >> k;
-			if (!std::cin.good()) {
-				std::cout << "Invalid input" << std::endl;
-				k = 5;
-				continue;
-			}
-			switch (k) {
-			case 1:
-				int r;
-				std::cout << "Enter number of digits" << std::endl;
-				std::cin >> r;
-				if (!std::cin.good()) {
-					std::cout << "Invalid input" << std::endl;
-					k = 5;
-					continue;
-				}
-				try {
-					a.moveRight(r);
-				}
-				catch (std::exception& b) {
-					std::cout << b.what() << std::endl;
-					continue;
-				}
-				a.output(std::cout);
-				std::cout << std::endl;
-				break;
-			case 2:
-				std::cout << "Enter number of digits" << std::endl;
-				std::cin >> r;
-				if (!std::cin.good()) {
-					std::cout << "Invalid input" << std::endl;
-					k = 5;
-					continue;
-				}
-				try {
-					a.moveLeft(r);
-				}
-				catch (std::exception& b) {
-					std::cout << b.what() << std::endl;
-					continue;
-				}
-				a.output(std::cout);
-				std::cout << std::endl;
-				break;
-			case 3:
-				a.output(std::cout);
-				std::cout << " " << a.Compare(b) << " ";
-				b.output(std::cout);
-				std::cout << std::endl;
-				break;
-			case 4:
-				if (!a.Parity()) {
-					a.output(std::cout);
-					std::cout << " is an even number" << std::endl;
-				}
-				else {
-					a.output(std::cout);
-					std::cout << " isn't an even number" << std::endl;
-				}
-				break;
-			case 5:
-				continue;
-			default:
-				std::cout << "You are wrong, repeat please" << std::endl;
-			}
-		}
-	}
-  
-	void out(HexNumber& a, HexNumber& b, HexNumber& c, const char* msg) {
-		if (b.getSign() == 'F') {
-			a.output(std::cout);
+	void out(HexNumber& op1, HexNumber& op2, HexNumber& res, const char* msg) {
+		if (op2.getSign() == 'F') {
+			op1.output(std::cout);
 			std::cout << msg << "(";
-			b.output(std::cout);
+			op2.output(std::cout);
 			std::cout << ") = ";
-			c.output(std::cout);
+			res.output(std::cout);
 			std::cout << std::endl;
 		}
 		else {
-			a.output(std::cout);
+			op1.output(std::cout);
 			std::cout << msg;
-			b.output(std::cout);
+			op2.output(std::cout);
 			std::cout << " = ";
-			c.output(std::cout);
+			res.output(std::cout);
 			std::cout << std::endl;
 		}
 	}
