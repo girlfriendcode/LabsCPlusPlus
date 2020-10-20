@@ -73,6 +73,25 @@ void Prog3::dialog(HexNumber& a, HexNumber& b) {
 			}
 		}
 	}
+
+void Prog3::out(const Prog3::HexNumber& a, const Prog3::HexNumber& b, const Prog3::HexNumber& c, const char* msg) {
+	if (b.getSign() == 'F') {
+		a.output(std::cout);
+		std::cout << msg << "(";
+		b.output(std::cout);
+		std::cout << ") = ";
+		c.output(std::cout);
+		std::cout << std::endl;
+	}
+	else {
+		a.output(std::cout);
+		std::cout << msg;
+		b.output(std::cout);
+		std::cout << " = ";
+		c.output(std::cout);
+		std::cout << std::endl;
+	}
+}
 int main() {
 	Prog3::HexNumber a, b;
 	int flag = 1;
