@@ -11,19 +11,18 @@ namespace Prog3 {
 		int length;//длина введённого пользователем символьного массива
 	public:
 		HexNumber();
-		HexNumber(char* str);
+		HexNumber(const char* str);
 		HexNumber(const long  a);
 		HexNumber(const HexNumber& number);
 		
 		HexNumber& operator= (const HexNumber& num);
 		
 		char getSign()const { return hex[0] ;};
-		char getElement(int i)const { return hex[i] ;};
     
 		std::ostream& output(std::ostream& o) const;
 		std::istream& input(std::istream& i);
     
-		HexNumber& setN(char* str);
+		HexNumber& setN( const char* str);
                 HexNumber& Convert();
 	        HexNumber& Add(const HexNumber& num);
 		HexNumber& Sub(const HexNumber& num);
@@ -31,10 +30,10 @@ namespace Prog3 {
 		HexNumber& moveRight(int a);
 		HexNumber& moveLeft(int a);
 		
-		char Compare(const HexNumber& num);//сравнение
-		int Parity();//чётность
+		char Compare(const HexNumber& num) const;//сравнение
+		int Parity() const;//чётность
 	};
-	void out(HexNumber& op1, HexNumber& op2, HexNumber& res, const char*);
+	void out(const HexNumber& op1, const HexNumber& op2, const HexNumber& res, const char*);
   
 	int CharToHex(char num);
 	char HexToChar(int num);
