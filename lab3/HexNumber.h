@@ -1,7 +1,7 @@
 #include <iosfwd>
 #ifndef __HEX_NUMBER_H__
 #define __HEX_NUMBER_H__
-#include <iostream>
+
 namespace Prog3 {
 	class HexNumber
 	{
