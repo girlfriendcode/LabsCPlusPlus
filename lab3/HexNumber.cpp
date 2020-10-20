@@ -43,17 +43,20 @@ namespace Prog3 {
 			length = 1;
 	}
 
-	HexNumber::HexNumber(const HexNumber& number) {
-		length=number.length;
+	HexNumber::HexNumber(const HexNumber& number):hex{}, length(number.length)
+	{
 		std::copy(number.hex, number.hex + HexNumber::MAX_LEN, hex);
 	}
+	
 	HexNumber& HexNumber::operator=(const HexNumber& num)
 	 {
-		 length = num.length;
-		 std::copy(num.hex, num.hex + HexNumber::MAX_LEN, hex);
-		 return *this;
+	        if(!this=num){
+		    length = num.length;
+		    std::copy(num.hex, num.hex + HexNumber::MAX_LEN, hex);
+		 }
+		return *this;
 	 }
-
+       
 	HexNumber& HexNumber::setN(char* str) {
 		int leng = strlen(str), i = 0;
 		if (!leng)
@@ -80,10 +83,9 @@ namespace Prog3 {
 			hex[j] = '0';
 		length = ((leng - i) > 31) ? 31 : leng - i;
 		for (int j = i; j < leng && ll < HexNumber::MAX_LEN; j++, ll++) {
-			str[j] = std::toupper(str[j]); //перевод в верхний регистр
-			if ((str[j] < '0' || ('9' < str[j] && str[j] < 'A') || 'F' < str[j]))//проверка попадания символа в диапазон шестнадцатиричных цифр
+			if ((str[j] < '0' || ('9' < str[j] && toupper(str[j]) < 'A') || 'F' < toupper(str[j])))//проверка попадания символа в диапазон шестнадцатиричных цифр
 				throw std::exception("Invalid symbol");
-			hex[ll] = str[j];
+			hex[ll] = toupper(str[j]);
 		}
 		if (leng - i > 31)
 			std::cout << "Only first 31 digits will be read" << std::endl;
@@ -246,7 +248,7 @@ namespace Prog3 {
 		return *this;
 	}
 
-	char HexNumber::Compare(const HexNumber& num)
+	char HexNumber::Compare(const HexNumber& num) const
 	{
 		if (hex[0] < num.hex[0])//проверяем знаки
 			return '>';
@@ -258,7 +260,7 @@ namespace Prog3 {
 		char sgn = getSign();
 		//HexNumber::MAX_LEN-l-позиция, начиная с которой сравниваем цифры
 		for (int i = HexNumber::MAX_LEN - l; i < HexNumber::MAX_LEN; i++) {
-			if (hex[i] > num.getElement(i)) {
+			if (hex[i] > num.hex[i]) {
 				if (sgn == '0')
 					return '>';
 				else
@@ -274,7 +276,7 @@ namespace Prog3 {
 		return '=';
 	}
 
-	int HexNumber::Parity() {
+	int HexNumber::Parity() const {
 		if (hex[31] >= '0' && hex[31] <= '9') {
 			return ((int)hex[31] - 48) % 2;
 		}
@@ -311,23 +313,4 @@ namespace Prog3 {
 	  return '/';
          }
   
-	void out(HexNumber& op1, HexNumber& op2, HexNumber& res, const char* msg) {
-		if (op2.getSign() == 'F') {
-			op1.output(std::cout);
-			std::cout << msg << "(";
-			op2.output(std::cout);
-			std::cout << ") = ";
-			res.output(std::cout);
-			std::cout << std::endl;
-		}
-		else {
-			op1.output(std::cout);
-			std::cout << msg;
-			op2.output(std::cout);
-			std::cout << " = ";
-			res.output(std::cout);
-			std::cout << std::endl;
-		}
-	}
-  
-}
+}//namespace Prog3
