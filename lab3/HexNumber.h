@@ -39,6 +39,6 @@ namespace Prog3 {
 	int CharToHex(char num);
 	char HexToChar(int num);
 	
-}
+}//namespace Prog3
 #endif /*!__HEX_NUMBER_H */
 
