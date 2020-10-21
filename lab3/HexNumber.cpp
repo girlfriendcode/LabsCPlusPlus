@@ -12,7 +12,7 @@ namespace Prog3 {
 	{
 		std::fill(hex, hex + HexNumber::MAX_LEN ,'0');
 	}
-	HexNumber::HexNumber(char* str)//инициализирующий строкой конструктор
+	HexNumber::HexNumber(const char* str)//инициализирующий строкой конструктор
 	{
 		try {
 			setN(str);
@@ -57,7 +57,7 @@ namespace Prog3 {
 		return *this;
 	 }
        
-	HexNumber& HexNumber::setN(char* str) {
+	HexNumber& HexNumber::setN(const char* str) {
 		int leng = strlen(str), i = 0;
 		if (!leng)
 			throw std::exception("Wrong data");
