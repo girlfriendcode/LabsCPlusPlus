@@ -7,8 +7,7 @@
 #include <algorithm>
 
 namespace Prog3 {
-	HexNumber::HexNumber(): hex {},
-		length(1)//пустой конструктор
+	HexNumber::HexNumber(): hex {},length(1)//пустой конструктор
 	{
 		std::fill(hex, hex + HexNumber::MAX_LEN ,'0');
 	}
@@ -50,7 +49,7 @@ namespace Prog3 {
 	
 	HexNumber& HexNumber::operator=(const HexNumber& num)
 	 {
-	        if(!this=num){
+	        if(this!= &num){
 		    length = num.length;
 		    std::copy(num.hex, num.hex + HexNumber::MAX_LEN, hex);
 		 }
