@@ -34,7 +34,7 @@ namespace Prog3 {
 		int Parity() const;//чётность
 	};
 	void out(const HexNumber& op1, const HexNumber& op2, const HexNumber& res, const char*);
-  
+	void dialog(HexNumber&, HexNumber&);
 	int CharToHex(char num);
 	char HexToChar(int num);
 	
