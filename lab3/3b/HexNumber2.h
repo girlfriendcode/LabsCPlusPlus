@@ -44,4 +44,4 @@ namespace Prog3 {
 	int CharToHex(char num);
 	char HexToChar(int num);
 }
-#endif /*!__HEX_NUMBER2_H */
+#endif /*!__HEX_NUMBER_H */
